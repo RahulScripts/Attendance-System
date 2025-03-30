@@ -12,12 +12,13 @@
 #define SS_PIN D4                // Slave select pin for the MFRC522
 #define BUZZER D8                // Buzzer pin
 #define BLOCK_NUM 6              // Block number from which to read data
+
 #define LATE_HOUR 8              // Hour threshold for lateness
 #define LATE_MINUTE 40           // Minute threshold for lateness
 
-const char* SSID = "VivoY56";
-const char* PASS = "12dhw7v5";
-const String SHEET_URL = "https://script.google.com/macros/s/AKfycbz2X95AAPDHLOX57t84yOv_iWUb6c4yYPXB0O6taXm61FS_09_GdtM_-DwXHPHp0TttyA/exec";
+const char* SSID = "WiFi_SSID";
+const char* PASS = "WiFi_Password";
+const String SHEET_URL = "Google_Scripts_App_Deployed_URL_With_EXEC_at_The_End";
 
 std::set<String> scannedCards;
 std::set<String> exitScannedCards;
