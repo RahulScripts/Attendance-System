@@ -1,0 +1,66 @@
+var ss = SpreadsheetApp.openById('YOUR_SHEET_ID');
+var sheet = ss.getSheetByName('Sheet1');//THIS IS DEFAULT SHEET check which sheet you have your table on and update accordingly
+var timezone = "YOUR_TIMEZONE";
+
+function doGet(e) {
+  try {
+    // [DIAGNOSTIC] Log raw input
+    Logger.log("Raw input: " + JSON.stringify(e));
+    
+    // Validate parameters
+    if (!e.parameters || !e.parameter.roll || !e.parameter.name || !e.parameter.status) {
+      return createResponse(400, "Missing required parameters");
+    }
+
+    // Sanitize inputs
+    const sanitized = {
+      roll: sanitizeInput(e.parameter.roll, 10, /[^0-9-]/g),
+      name: sanitizeInput(e.parameter.name, 25, /[^a-zA-Z ]/g),
+      status: ["Present", "Late", "Left"].includes(e.parameter.status) 
+             ? e.parameter.status 
+             : "Invalid"
+    };
+
+    // [DIAGNOSTIC] Log sanitized data
+    Logger.log("Sanitized: " + JSON.stringify(sanitized));
+
+    // Validate data format
+    if (!sanitized.roll.match(/^\d{2}-\d+$/) || sanitized.name.length < 2) {
+      return createResponse(400, "Invalid data format");
+    }
+
+    // Prepare timestamp
+    const now = new Date();
+    const rowData = [
+      Utilities.formatDate(now, timezone, 'yyyy-MM-dd'),
+      Utilities.formatDate(now, timezone, 'HH:mm:ss'),
+      sanitized.roll,
+      sanitized.name,
+      sanitized.status
+    ];
+
+    // Append to sheet
+    sheet.appendRow(rowData);
+    
+    return createResponse(200, `${sanitized.name} (${sanitized.roll}) recorded`);
+    
+  } catch (error) {
+    // [DIAGNOSTIC] Log errors
+    Logger.log("Error: " + error.toString());
+    return createResponse(500, "Server error");
+  }
+}
+
+function sanitizeInput(value, maxLength, regex) {
+  return value.toString()
+    .replace(regex, '')
+    .substring(0, maxLength)
+    .trim();
+}
+
+function createResponse(code, message) {
+  return ContentService.createTextOutput(JSON.stringify({
+    code: code,
+    message: message
+  })).setMimeType(ContentService.MimeType.JSON);
+}
