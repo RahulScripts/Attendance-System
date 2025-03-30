@@ -49,6 +49,18 @@ This project uses the ESP8266 along with an RC-522 RFID scanner to automate atte
 1. **Hardware Setup:**
    - Connect the RC-522 module to the ESP8266 (e.g., RST_PIN to D3, SS_PIN to D4).
    - Connect the buzzer to the designated pin (D8 in this example).
+   - Connections:
+
+      | ESP8266 Pin | RFID-RC522 Pin | Buzzer Pin |
+      |-------------|--------------|------------|
+      | 3.3V       | 3.3V         | -          |
+      | GND        | GND         | - (GND)    |
+      | D3 (GPIO0) | RST         | -          |
+      | D4 (GPIO2) | SDA (SS)    | -          |
+      | D5 (GPIO14)| SCK         | -          |
+      | D6 (GPIO12)| MISO        | -          |
+      | D7 (GPIO13)| MOSI        | -          |
+      | D8 (GPIO15)| -           | + (Signal) |
 
 2. **Software Setup:**
    - Install the required libraries via the Arduino IDE Library Manager.
