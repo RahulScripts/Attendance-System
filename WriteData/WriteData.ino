@@ -8,7 +8,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
 
 const byte BLOCK_NUM = 6;  // Sector 1 Block 2
-const String STUDENT_DATA = "21-RahulHalli"; // Format: Roll-Name (max 15 chars)
+const String STUDENT_DATA = "ROLL-NAME"; // Format: Roll-Name (max 15 chars)
 
 void setup() {
   Serial.begin(115200);
